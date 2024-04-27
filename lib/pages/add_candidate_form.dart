@@ -119,11 +119,10 @@ class _AddCandidateFormState extends State<AddCandidateForm> {
 
               var response = await http.post(
                 Uri.parse('https://jsonplaceholder.typicode.com/users'),
-                headers: {"Content-Type": "application/json"},
                 body: json.encode(person.toMap()),
               );
 
-              if (response.statusCode == 201 || response.statusCode == 200) {
+              if (response.statusCode >= 200 && response.statusCode <= 299) {
                 print('${response.statusCode}');
                 Navigator.pop(context, person);
                 ScaffoldMessenger.of(context).showSnackBar(
