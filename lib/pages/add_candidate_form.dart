@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mini_projet_candidats/common/I_button.dart';
 import 'package:mini_projet_candidats/common/i_input.dart';
 import 'package:mini_projet_candidats/models/person_dart.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class AddCandidateForm extends StatefulWidget {
   const AddCandidateForm({super.key});
@@ -12,7 +14,7 @@ class AddCandidateForm extends StatefulWidget {
 
 class _AddCandidateFormState extends State<AddCandidateForm> {
   final _formKey = GlobalKey<FormState>();
-  final Person person= Person();
+  final Candidate person= Candidate();
 
   @override
   Widget build(BuildContext context) {
@@ -110,21 +112,41 @@ class _AddCandidateFormState extends State<AddCandidateForm> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: IButton(
-          onPressed: () {
-            if(  _formKey.currentState!.validate()){
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Inscription réussie'),
-                  duration: Duration(seconds: 1),
-                ),
-              );
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              Navigator.pop(context, person);
+
+
+              var response = await http.post(
+                Uri.parse('https://jsonplaceholder.typicode.com/users'),
+                headers: {"Content-Type": "application/json"},
+                body: json.encode(person.toMap()),
+              );
+
+              if (response.statusCode == 201 || response.statusCode == 200) {
+                print('${response.statusCode}');
+                Navigator.pop(context, person);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Inscription réussie'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Erreur lors de l\'envoi des données'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
             }
           },
+
           text: 'Ajouter',
         ),
       ),
+
     );
   }
 }

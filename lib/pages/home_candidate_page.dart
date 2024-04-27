@@ -12,8 +12,8 @@ class HomeCandidatePage extends StatefulWidget {
 class _HomeCandidatePageState extends State<HomeCandidatePage> {
   String name = "";
   bool liked = false;
-  List<Person> persons = [];
-  List<Person> friends = [];
+  List<Candidate> persons = [];
+  List<Candidate> friends = [];
 
 
   @override
@@ -75,7 +75,7 @@ class _HomeCandidatePageState extends State<HomeCandidatePage> {
               child: ListView.builder(
                 itemCount: persons.length,
                 itemBuilder: (context, index) {
-                  Person person = persons[index];
+                  Candidate person = persons[index];
                   return Card(
                     margin: EdgeInsets.all(10.0),
                     color: Colors.white,
@@ -149,37 +149,27 @@ class _HomeCandidatePageState extends State<HomeCandidatePage> {
       ),
 
 
-
       floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            Person person = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddCandidateForm (),
-                ));
+        onPressed: () async {
+          Candidate? newPerson = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddCandidateForm(),
+              ));
 
-            setState(() => persons.add(person));
+          if (newPerson != null) {
+            setState(() => persons.add(newPerson));
+          }
+        },
+        child: Icon(Icons.add),
+      ),
 
-          },
-          child: Icon(Icons.add),
-        ),
 
 
 
     );
   }
 
-  bool checkIfExists(Person person) {
-    return friends.contains(person);
-  }
-
-  void addFriend(Person person) {
-    if (!checkIfExists(person)) {
-      friends.add(person);
-    } else {
-      friends.remove(person);
-    }
-  }
 
 
 }

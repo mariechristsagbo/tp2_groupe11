@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Iut Training',
+      title: '',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Color(0X5e8851)),
           useMaterial3: true,

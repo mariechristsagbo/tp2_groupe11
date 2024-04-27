@@ -1,4 +1,4 @@
-class Person {
+class Candidate {
   String? name;
   String? surname;
   String? description;
@@ -7,10 +7,23 @@ class Person {
   String? profil;
   Person? spouse;*/
 
-  Person({this.name, this.surname,}); /* this.birthDate, this.sex*/
+  Candidate({this.name, this.surname}); /* this.birthDate, this.sex*/
 
   @override
   String toString() {
     return 'Person{name: $name, surname: $surname, description: $description }'; /*birthDate: $birthDate, sex: $sex*/
+  }
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'surname': surname,
+      'description': description,
+      //'birthDate': birthDate,
+      //'sex': sex,
+      //'profil': profil,
+      //'spouse': spouse,
+    };
   }
 }
